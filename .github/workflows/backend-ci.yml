@@ -13,44 +13,34 @@ jobs:
     defaults:
       run:
         working-directory: starter/backend
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.13'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Run linter
-        run: flake8 .
+      - run: pip install pipenv
+      - run: pipenv install
+      - run: pipenv run lint
 
   test:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: starter/backend
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.13'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Run tests
-        run: pytest
+      - run: pip install pipenv
+      - run: pipenv install
+      - run: pipenv run test
 
   build:
     runs-on: ubuntu-latest
@@ -58,9 +48,8 @@ jobs:
     defaults:
       run:
         working-directory: starter/backend
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: docker build -t mp-backend:ci-test .
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: docker build -t mp-backend:ci-test .
